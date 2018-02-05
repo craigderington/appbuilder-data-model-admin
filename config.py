@@ -7,7 +7,7 @@ SECRET_KEY = os.urandom(64)
 
 # The SQLAlchemy connection string.
 #SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
-SQLALCHEMY_DATABASE_URI = 'mysql://root:deadbeef@localhost/earl'
+SQLALCHEMY_DATABASE_URI = 'mysql://user:pass@localhost/earl'
 #SQLALCHEMY_DATABASE_URI = 'postgresql://root:password@localhost/myapp'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
