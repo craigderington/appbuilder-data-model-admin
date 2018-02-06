@@ -1,7 +1,7 @@
 # EARL-Data-Model-AppBuilder
 The EARL Data Model Web Application Wrapper with Flask AppBuilder.  
 
-For detailed instructions for on installing the application, please visit or clone this repository's Wiki at: https://github.com/DiamondMediaSolutions/EARL-Data-Model-AppBuilder/wiki
+Detailed instructions for installing this application can be found in this repository's Wiki at: https://github.com/DiamondMediaSolutions/EARL-Data-Model-AppBuilder/wiki
 
 
 ```
