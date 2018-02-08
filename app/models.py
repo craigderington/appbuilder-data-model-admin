@@ -1,7 +1,8 @@
 from datetime import datetime
 from flask_appbuilder import Model
 from flask_appbuilder.models.mixins import AuditMixin, FileColumn, ImageColumn
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, Text, Decimal
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, Text
+from sqlalchemy.types import DECIMAL
 from sqlalchemy.orm import relationship
 
 # Define application models
@@ -30,8 +31,8 @@ class Visitor(Model):
     country_name = Column(String(255))
     city = Column(String(255))
     time_zone = Column(String(50))
-    longitude = Column(Decimal(11, 8))
-    latitude = Column(Decimal(10, 8))
+    longitude = Column(DECIMAL(11, 8))
+    latitude = Column(DECIMAL(10, 8))
     metro_code = Column(String(10))
     country_code = Column(String(2))
     country_code3 = Column(String(3))
