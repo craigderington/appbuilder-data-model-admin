@@ -13,19 +13,19 @@ class CampaignModelView(ModelView):
     base_order = ('created_date', 'desc')
     show_fieldsets = [
         ('Campaign Details',
-            {'fields': ['store', 'campaign_type', 'name', 'created_date', 'job_number', 'description',
+            {'fields': ['store', 'campaign_type', 'name', 'client_id', 'created_date', 'job_number', 'description',
                         'pixeltracker'], 'expanded': True}),
     ]
 
     add_fieldsets = [
         ('Campaign Details',
-            {'fields': ['store', 'campaign_type', 'name', 'created_date', 'job_number', 'description',
+            {'fields': ['store', 'campaign_type', 'name', 'client_id', 'created_date', 'job_number', 'description',
                         'pixeltracker'], 'expanded': True}),
     ]
 
     edit_fieldsets = [
         ('Campaign Details',
-            {'fields': ['store', 'campaign_type', 'name', 'created_date', 'job_number', 'description',
+            {'fields': ['store', 'campaign_type', 'name', 'client_id', 'created_date', 'job_number', 'description',
                         'pixeltracker'], 'expanded': True}),
     ]
 
@@ -91,6 +91,9 @@ class VisitorModelView(ModelView):
         ('Visitor Details',
          {'fields': ['send_hash', 'open_hash', 'campaign_hash', 'raw_data', 'appended', 'user_agent'],
           'expanded': False}),
+        ('GeoIP',
+         {'fields': ['country_code', 'city', 'region', 'postal_code', 'country_code', 'time_zone',
+                     'area_code', 'dma_code', 'traffic_type', 'latitude', 'longitude'], 'expanded': False}),
     ]
     add_fieldsets = [
         ('Visitor Info',

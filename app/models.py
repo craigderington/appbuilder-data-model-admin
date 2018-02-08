@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask_appbuilder import Model
 from flask_appbuilder.models.mixins import AuditMixin, FileColumn, ImageColumn
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, Text
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, Text, Decimal
 from sqlalchemy.orm import relationship
 
 # Define application models
@@ -27,12 +27,35 @@ class Visitor(Model):
     processed = Column(Boolean, default=False)
     campaign = relationship("Campaign")
     store = relationship("Store")
+    country_name = Column(String(255))
+    city = Column(String(255))
+    time_zone = Column(String(50))
+    longitude = Column(Decimal(11, 8))
+    latitude = Column(Decimal(10, 8))
+    metro_code = Column(String(10))
+    country_code = Column(String(2))
+    country_code3 = Column(String(3))
+    dma_code = Column(String(3))
+    area_code = Column(String(3))
+    postal_code = Column(String(5))
+    region = Column(String(50))
+    region_name = Column(String(255))
+    traffic_type = Column(String(255))
 
     def __repr__(self):
-        return '{} {} {}'.format(
+        return 'From {} on {} for {}'.format(
             self.ip,
             self.created_date,
-            self.campaign_id
+            self.campaign
+        )
+
+    def get_geoip_data(self):
+        return '{} {} {} {} {}'.format(
+            self.country_code,
+            self.city,
+            self.region,
+            self.postal_code,
+            self.traffic_type
         )
 
 
@@ -57,6 +80,7 @@ class AppendedVisitor(Model):
     car_year = Column(Integer)
     car_make = Column(String(255))
     car_model = Column(String(255))
+    processed = Column(Boolean, default=False)
 
     def __repr__(self):
         return '{} {}'.format(
@@ -73,6 +97,10 @@ class Lead(Model):
     created_date = Column(DateTime, onupdate=datetime.now)
     email_verified = Column(Boolean, default=False)
     lead_optout = Column(Boolean, default=False)
+    processed = Column(Boolean, default=False)
+    followup_email = Column(Boolean, default=False)
+    followup_voicemail = Column(Boolean, default=False)
+    followup_print = Column(Boolean, default=False)
 
     def __repr__(self):
         return '{}'.format(
@@ -141,6 +169,7 @@ class Campaign(Model):
     radius = Column(Integer, default=50)
     pixeltrackers_id = Column(Integer, ForeignKey('pixeltrackers.id'))
     pixeltracker = relationship("PixelTracker")
+    client_id = Column(String(20))
 
     def __repr__(self):
         return '{}'.format(

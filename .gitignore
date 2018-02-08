@@ -103,7 +103,7 @@ ENV/
 # PyCharm
 .env/
 .idea/
-
+config.py
 
 # SQLite3
 *.sqlite
