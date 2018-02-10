@@ -25,6 +25,17 @@ Detailed instructions for installing this application can be found in this repos
             processed = Column(Boolean, default=False)
             campaign = relationship("Campaign")
             store = relationship("Store")
+            country_name = Column(String(255))
+            city = Column(String(255))
+            time_zone = Column(String(50))
+            longtitude = Column(String(50))
+            latitude = Column(String(50))
+            metro_code = Column(String(3))
+            dma_code = Column(String(3))
+            area_code = Column(String(3))
+            postal_code = Column(String(10))
+            region = Column(String(255))
+            region_name = Column(String(255))
 
             def __init__(self, campaign_id, store_id, created_date, ip):
                 self.campaign_id = campaign_id
@@ -57,7 +68,7 @@ Detailed instructions for installing this application can be found in this repos
             zip_code = Column(String(5))
             zip_4 = Column(Integer)
             credit_range = Column(String(50))
-            car_year = Column(Integer)
+            car_year = Column(String(10))
             car_make = Column(String(255))
             car_model = Column(String(255))
 
