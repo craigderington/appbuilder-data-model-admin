@@ -151,7 +151,14 @@ class AppendedVisitorModelView(ModelView):
 
 class LeadModelView(ModelView):
     datamodel = SQLAInterface(Lead)
-    related_views = [AppendedVisitorModelView]
+    list_columns = ['appended_visitor', 'created_date', 'email_verified', 'processed', 'lead_optout',
+                    'followup_email']
+    base_order = ('created_date', 'asc')
+    show_fieldsets = [
+        ('Lead Details',
+         {'fields': ['appended_visitor', 'created_date', 'email_verified', 'processed', 'lead_optout',
+                     'followup_email'], 'expanded': True}),
+    ]
 
 
 class PixelTrackerModelView(ModelView):
