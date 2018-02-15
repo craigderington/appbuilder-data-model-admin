@@ -156,8 +156,14 @@ class LeadModelView(ModelView):
     base_order = ('created_date', 'asc')
     show_fieldsets = [
         ('Lead Details',
-         {'fields': ['appended_visitor', 'created_date', 'email_verified', 'processed', 'lead_optout',
-                     'followup_email'], 'expanded': True}),
+         {'fields': ['appended_visitor', 'created_date', 'email_verified', 'processed', 'lead_optout'],
+          'expanded': True}),
+        ('Lead Follow Up',
+         {'fields': ['sent_to_dealer', 'sent_adf', 'followup_email', 'followup_voicemail', 'followup_print'],
+          'expanded': True}),
+        ('Lead Receipts',
+         {'fields': ['email_receipt_id', 'email_validation_message', 'adf_email_receipt_id',
+                     'adf_email_validation_message'], 'expanded': False}),
     ]
 
 
