@@ -81,15 +81,15 @@ class StoreModelView(ModelView):
 
 class VisitorModelView(ModelView):
     datamodel = SQLAInterface(Visitor)
-    list_columns = ['created_date', 'ip', 'appended', 'send_hash', 'num_visits',
-                    'processed', 'job_number', 'client_id', 'store', 'campaign']
+    list_columns = ['processed', 'store', 'campaign', 'job_number', 'client_id', 'created_date',
+                    'ip', 'appended', 'num_visits', ]
     base_order = ('created_date', 'desc')
     show_fieldsets = [
         ('Visitor Info',
          {'fields': ['job_number', 'created_date', 'ip', 'appended', 'client_id', 'num_visits',
                      'processed', 'store', 'campaign'], 'expanded': True}),
         ('Visitor Details',
-         {'fields': ['send_hash', 'open_hash', 'campaign_hash', 'raw_data', 'appended', 'user_agent'],
+         {'fields': ['send_hash', 'open_hash', 'campaign_hash', 'raw_data', 'user_agent'],
           'expanded': False}),
         ('GeoIP',
          {'fields': ['country_code', 'city', 'region', 'postal_code', 'country_code', 'time_zone',
