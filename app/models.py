@@ -1,4 +1,5 @@
 from datetime import datetime
+from flask import Markup, url_for
 from flask_appbuilder import Model
 from flask_appbuilder.models.mixins import AuditMixin, FileColumn, ImageColumn
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, Text
@@ -116,6 +117,11 @@ class Lead(Model):
         return '{}'.format(
             self.id
         )
+
+    def get_link(self):
+        return Markup(
+            '<a href="' + url_for('AppendedVisitorModelView.show',
+                                  pk=self.appended_visitor_id) + '">Link to Appended Visitor</a>')
 
 
 class Store(Model):

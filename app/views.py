@@ -1,7 +1,7 @@
 from flask import render_template
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 from flask_appbuilder import ModelView
-
+from markupsafe import Markup, escape
 from app import appbuilder, db
 from .models import CampaignType, Campaign, Store, Visitor, AppendedVisitor, \
     Lead, PixelTracker
@@ -150,14 +150,15 @@ class AppendedVisitorModelView(ModelView):
 
 
 class LeadModelView(ModelView):
+
     datamodel = SQLAInterface(Lead)
-    list_columns = ['appended_visitor', 'created_date', 'email_verified', 'processed', 'lead_optout',
+    list_columns = ['appended_visitor', 'created_date', 'sent_to_dealer', 'email_verified', 'processed', 'lead_optout',
                     'followup_email']
-    base_order = ('created_date', 'asc')
+    base_order = ('created_date', 'desc')
     show_fieldsets = [
         ('Lead Details',
-         {'fields': ['appended_visitor', 'created_date', 'email_verified', 'processed', 'lead_optout'],
-          'expanded': True}),
+         {'fields': ['appended_visitor', 'appended_visitor_id', 'get_link', 'created_date', 'email_verified',
+                     'processed', 'lead_optout'], 'expanded': True}),
         ('Lead Follow Up',
          {'fields': ['sent_to_dealer', 'sent_adf', 'followup_email', 'followup_voicemail', 'followup_print'],
           'expanded': True}),
