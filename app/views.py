@@ -20,7 +20,7 @@ class CampaignModelView(ModelView):
     add_fieldsets = [
         ('Campaign Details',
             {'fields': ['store', 'campaign_type', 'name', 'client_id', 'created_date', 'job_number', 'description',
-                        'pixeltracker'], 'expanded': True}),
+                        'radius', 'pixeltracker'], 'expanded': True}),
     ]
 
     edit_fieldsets = [
@@ -56,26 +56,29 @@ class StoreModelView(ModelView):
     show_fieldsets = [
         ('Store Information',
          {'fields': ['name', 'address1', 'address2', 'city', 'state', 'zip_code', 'zip_4', 'status',
-                     'phone_number'], 'expanded': True}),
+                     'phone_number', 'reporting_email', 'notification_email', 'adf_email', ],
+          'expanded': True}),
         ('SimpliFi Details',
-         {'fields': ['adf_email', 'reporting_email', 'notification_email', 'simplifi_company_id',
-                     'simplifi_client_id', 'simplifi_name'], 'expanded': True}),
+         {'fields': ['simplifi_company_id', 'simplifi_client_id', 'simplifi_name'],
+          'expanded': True}),
     ]
     add_fieldsets = [
         ('Store Information',
          {'fields': ['client_id', 'name', 'address1', 'address2', 'city', 'state', 'zip_code',
-                     'zip_4', 'status', 'phone_number'], 'expanded': True}),
+                     'zip_4', 'status', 'phone_number', 'reporting_email', 'notification_email', 'adf_email', ],
+          'expanded': True}),
         ('SimpliFi Details',
-         {'fields': ['adf_email', 'reporting_email', 'notification_email', 'simplifi_company_id',
-                     'simplifi_client_id', 'simplifi_name'], 'expanded': False}),
+         {'fields': ['simplifi_company_id', 'simplifi_client_id', 'simplifi_name'],
+          'expanded': False}),
     ]
     edit_fieldsets = [
         ('Store Information',
          {'fields': ['client_id', 'name', 'address1', 'address2', 'city', 'state', 'zip_code',
-                     'zip_4', 'status', 'phone_number'], 'expanded': True}),
+                     'zip_4', 'status', 'phone_number', 'reporting_email', 'notification_email', 'adf_email', ],
+          'expanded': True}),
         ('SimpliFi Details',
-         {'fields': ['adf_email', 'reporting_email', 'notification_email', 'simplifi_company_id',
-                     'simplifi_client_id', 'simplifi_name'], 'expanded': False}),
+         {'fields': ['simplifi_company_id', 'simplifi_client_id', 'simplifi_name'],
+          'expanded': False}),
     ]
 
 
@@ -97,18 +100,18 @@ class VisitorModelView(ModelView):
     ]
     add_fieldsets = [
         ('Visitor Info',
-         {'fields': ['job_number', 'created_date', 'ip', 'appended', 'client_id', 'num_visits',
-                     'processed', 'store', 'campaign'], 'expanded': True}),
+         {'fields': ['store', 'campaign', 'job_number', 'created_date', 'ip', 'appended', 'client_id', 'num_visits',
+                     'processed'], 'expanded': True}),
         ('Visitor Details',
-         {'fields': ['send_hash', 'open_hash', 'campaign_hash', 'raw_data', 'appended', 'user_agent'],
+         {'fields': ['user_agent', 'send_hash', 'open_hash', 'campaign_hash', 'raw_data', 'appended', 'user_agent'],
           'expanded': False}),
     ]
     edit_fieldsets = [
         ('Visitor Info',
-         {'fields': ['job_number', 'created_date', 'ip', 'appended', 'client_id', 'num_visits',
-                     'processed', 'store', 'campaign'], 'expanded': True}),
+         {'fields': ['store', 'campaign', 'job_number', 'created_date', 'ip', 'appended', 'client_id', 'num_visits',
+                     'processed'], 'expanded': True}),
         ('Visitor Details',
-         {'fields': ['send_hash', 'open_hash', 'campaign_hash', 'raw_data', 'appended', 'user_agent'],
+         {'fields': ['user_agent', 'send_hash', 'open_hash', 'campaign_hash', 'raw_data', 'appended'],
           'expanded': False}),
     ]
 
