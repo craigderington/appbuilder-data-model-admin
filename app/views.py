@@ -13,20 +13,20 @@ class CampaignModelView(ModelView):
     base_order = ('created_date', 'desc')
     show_fieldsets = [
         ('Campaign Details',
-            {'fields': ['store', 'campaign_type', 'name', 'client_id', 'created_date', 'job_number', 'description',
-                        'pixeltracker'], 'expanded': True}),
+            {'fields': ['store', 'campaign_type', 'name', 'start_date', 'end_date', 'client_id',
+                        'created_date', 'job_number', 'description', 'pixeltracker'], 'expanded': True}),
     ]
 
     add_fieldsets = [
         ('Campaign Details',
-            {'fields': ['store', 'campaign_type', 'name', 'client_id', 'created_date', 'job_number', 'description',
-                        'radius', 'pixeltracker'], 'expanded': True}),
+            {'fields': ['store', 'campaign_type', 'name', 'start_date', 'end_date', 'client_id',
+                        'created_date', 'job_number', 'description', 'radius', 'pixeltracker'], 'expanded': True}),
     ]
 
     edit_fieldsets = [
         ('Campaign Details',
-            {'fields': ['store', 'campaign_type', 'name', 'client_id', 'created_date', 'job_number', 'description',
-                        'pixeltracker'], 'expanded': True}),
+            {'fields': ['store', 'campaign_type', 'name', 'start_date', 'end_date', 'client_id',
+                        'created_date', 'job_number', 'description', 'pixeltracker'], 'expanded': True}),
     ]
 
 
