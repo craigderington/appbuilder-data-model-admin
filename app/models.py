@@ -189,6 +189,9 @@ class Campaign(Model):
     pixeltrackers_id = Column(Integer, ForeignKey('pixeltrackers.id'), nullable=False)
     pixeltracker = relationship("PixelTracker")
     client_id = Column(String(20), nullable=False)
+    rvm_campaign_id = Column(Integer, unique=True, nullable=True, default=0)
+    rvm_send_count = Column(Integer, default=0)
+    rvm_limit = Column(Integer, nullable=False, default=10000)
 
     def __repr__(self):
         return '{}'.format(

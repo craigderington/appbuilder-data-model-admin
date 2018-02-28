@@ -14,19 +14,22 @@ class CampaignModelView(ModelView):
     show_fieldsets = [
         ('Campaign Details',
             {'fields': ['store', 'campaign_type', 'name', 'start_date', 'end_date', 'client_id',
-                        'created_date', 'job_number', 'description', 'pixeltracker'], 'expanded': True}),
+                        'created_date', 'job_number', 'description', 'pixeltracker',
+                        'rvm_campaign_id', 'rvm_send_count', 'rvm_limit'], 'expanded': True}),
     ]
 
     add_fieldsets = [
         ('Campaign Details',
             {'fields': ['store', 'campaign_type', 'name', 'start_date', 'end_date', 'client_id',
-                        'created_date', 'job_number', 'description', 'radius', 'pixeltracker'], 'expanded': True}),
+                        'created_date', 'job_number', 'description', 'radius', 'pixeltracker',
+                        'rvm_campaign_id', 'rvm_send_count', 'rvm_limit'], 'expanded': True}),
     ]
 
     edit_fieldsets = [
         ('Campaign Details',
             {'fields': ['store', 'campaign_type', 'name', 'start_date', 'end_date', 'client_id',
-                        'created_date', 'job_number', 'description', 'pixeltracker'], 'expanded': True}),
+                        'created_date', 'job_number', 'description', 'pixeltracker',
+                        'rvm_campaign_id', 'rvm_send_count', 'rvm_limit'], 'expanded': True}),
     ]
 
 
