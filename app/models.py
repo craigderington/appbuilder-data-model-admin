@@ -115,6 +115,13 @@ class Lead(Model):
     sent_adf = Column(Boolean, default=False)
     adf_email_receipt_id = Column(String(255))
     adf_email_validation_message = Column(String(50))
+    rvm_status = Column(String(20), nullable=True)
+    rvm_date = Column(DateTime)
+    rvm_message = Column(String(50))
+    rvm_sent = Column(Boolean, default=0, nullable=False)
+    followup_email_sent_date = Column(DateTime)
+    followup_email_receipt_id = Column(String(255), nullable=True, default='NOID')
+    followup_email_status = Column(String(20), nullable=True, default='NOTSENT')
 
     def __repr__(self):
         return '{}'.format(
@@ -136,8 +143,8 @@ class Store(Model):
     address2 = Column(String(255))
     city = Column(String(255), nullable=False)
     state = Column(String(2), nullable=False)
-    zip_code = Column(Integer, nullable=False)
-    zip_4 = Column(Integer)
+    zip_code = Column(String(10), nullable=False)
+    zip_4 = Column(String(10), nullable=True)
     status = Column(String(20), default='Active', nullable=False)
     adf_email = Column(String(255))
     notification_email = Column(String(255), nullable=False)
@@ -146,11 +153,15 @@ class Store(Model):
     simplifi_company_id = Column(Integer)
     simplifi_client_id = Column(String(255))
     simplifi_name = Column(String(255))
+    system_notifications = Column(String(255))
 
     def __repr__(self):
         return '{}'.format(
             self.name
         )
+
+    def get_id(self):
+        return int(self.id)
 
 
 class CampaignType(Model):
@@ -189,6 +200,9 @@ class Campaign(Model):
     pixeltrackers_id = Column(Integer, ForeignKey('pixeltrackers.id'), nullable=False)
     pixeltracker = relationship("PixelTracker")
     client_id = Column(String(20), nullable=False)
+    creative_header = Column(Text)
+    creative_footer = Column(Text)
+    email_subject = Column(String(255))
     rvm_campaign_id = Column(Integer, unique=True, nullable=True, default=0)
     rvm_send_count = Column(Integer, default=0)
     rvm_limit = Column(Integer, nullable=False, default=10000)
@@ -213,3 +227,13 @@ class PixelTracker(Model):
         return '{}'.format(
             self.name
         )
+
+
+class Contact(Base):
+    __tablename__ = 'contacts'
+    id = Column(Integer, primary_key=True)
+    store_id = Column(Integer, ForeignKey('stores.id'))
+    first_name = Column(String(255), nullable=False)
+    last_name = Column(String(255), nullable=False)
+    email = Column(String(255), unique=True, nullable=False)
+    mobile = Column(String(255), unique=True, nullable=False)
