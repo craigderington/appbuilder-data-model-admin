@@ -229,7 +229,7 @@ class PixelTracker(Model):
         )
 
 
-class Contact(Base):
+class Contact(Model):
     __tablename__ = 'contacts'
     id = Column(Integer, primary_key=True)
     store_id = Column(Integer, ForeignKey('stores.id'))
