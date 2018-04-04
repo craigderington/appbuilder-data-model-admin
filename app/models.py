@@ -2,8 +2,9 @@ from datetime import datetime
 from flask import Markup, url_for
 from flask_appbuilder import Model
 from flask_appbuilder.models.mixins import AuditMixin, FileColumn, ImageColumn
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, Text
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, Text, Float
+from sqlalchemy.orm import relationship, relation
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # Define application models
 
@@ -16,6 +17,7 @@ class Visitor(Model):
     created_date = Column(DateTime, default=datetime.now)
     ip = Column(String(15), nullable=False, index=True)
     user_agent = Column(String(255))
+    referrer = Column(Text)
     job_number = Column(Integer, nullable=False)
     client_id = Column(String(255), nullable=False)
     appended = Column(Boolean, default=False)
@@ -199,13 +201,14 @@ class Campaign(Model):
     radius = Column(Integer, default=50, nullable=False)
     pixeltrackers_id = Column(Integer, ForeignKey('pixeltrackers.id'), nullable=False)
     pixeltracker = relationship("PixelTracker")
-    client_id = Column(String(20), nullable=False)
+    client_id = Column(String(20), unique=True, nullable=False)
     creative_header = Column(Text)
     creative_footer = Column(Text)
     email_subject = Column(String(255))
     rvm_campaign_id = Column(Integer, unique=True, nullable=True, default=0)
     rvm_send_count = Column(Integer, default=0)
     rvm_limit = Column(Integer, nullable=False, default=10000)
+    adf_subject = Column(String(255))
 
     def __repr__(self):
         return '{}'.format(
@@ -235,5 +238,72 @@ class Contact(Model):
     store_id = Column(Integer, ForeignKey('stores.id'))
     first_name = Column(String(255), nullable=False)
     last_name = Column(String(255), nullable=False)
+    title = Column(String(50), nullable=True)
     email = Column(String(255), unique=True, nullable=False)
     mobile = Column(String(255), unique=True, nullable=False)
+
+    def __repr__(self):
+        return '{} {} - {} - {}'.format(
+            self.first_name,
+            self.last_name,
+            self.title,
+            self.mobile
+        )
+
+
+class Dashboard(Model):
+    __tablename__ = 'dashboard'
+    id = Column(Integer, primary_key=True)
+    total_stores = Column(Integer, default=0, nullable=False)
+    active_stores = Column(Integer, default=0, nullable=False)
+    total_campaigns = Column(Integer, default=0, nullable=False)
+    active_campaigns = Column(Integer, default=0, nullable=False)
+    total_global_visitors = Column(Integer, default=0, nullable=False)
+    total_unique_visitors = Column(Integer, default=0, nullable=False)
+    total_us_visitors = Column(Integer, default=0, nullable=False)
+    total_appends = Column(Integer, default=0, nullable=False)
+    total_sent_to_dealer = Column(Integer, default=0, nullable=False)
+    total_sent_followup_emails = Column(Integer, default=0, nullable=False)
+    total_rvms_sent = Column(Integer, default=0, nullable=False)
+    global_append_rate = Column(Float, default=0.00, nullable=False)
+    unique_append_rate = Column(Float, default=0.00, nullable=False)
+    us_append_rate = Column(Float, default=0.00, nullable=False)
+
+    def __repr__(self):
+        return '{}'.format(self.id)
+
+
+class DealerUser(Model):
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String(64))
+    last_name = Column(String(64), nullable=False)
+    username = Column(String(64), unique=True, nullable=False)
+    password = Column(String(256))
+    active = Column(Boolean, default=1)
+    email = Column(String(64), unique=True, nullable=False)
+    last_login = Column(DateTime, onupdate=datetime.now)
+    store_id = Column(Integer, ForeignKey('stores.id'))
+    store_name = relationship("Store")
+    store_emp_id = Column(String(50))
+
+    def __repr__(self):
+        return '{} {} - {}'.format(
+            self.first_name,
+            self.last_name,
+            self.store_name
+        )
+
+    def set_password(self, password):
+        self.pw_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.pw_hash, password)
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return int(self.id)

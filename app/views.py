@@ -1,10 +1,12 @@
 from flask import render_template
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 from flask_appbuilder import ModelView
+from flask_appbuilder.models.sqla.filters import FilterStartsWith, FilterEqualFunction
 from markupsafe import Markup, escape
+from werkzeug.security import generate_password_hash
 from app import appbuilder, db
 from .models import CampaignType, Campaign, Store, Visitor, AppendedVisitor, \
-    Lead, PixelTracker
+    Lead, PixelTracker, DealerUser
 
 
 class CampaignModelView(ModelView):
@@ -160,7 +162,7 @@ class LeadModelView(ModelView):
     datamodel = SQLAInterface(Lead)
     list_columns = ['appended_visitor', 'created_date', 'sent_to_dealer', 'email_verified', 'processed', 'lead_optout',
                     'followup_email']
-    base_order = ('created_date', 'desc')
+    base_order = ('created_date', 'desc', )
     show_fieldsets = [
         ('Lead Details',
          {'fields': ['appended_visitor', 'appended_visitor_id', 'get_link', 'created_date', 'email_verified',
@@ -171,6 +173,32 @@ class LeadModelView(ModelView):
         ('Lead Receipts',
          {'fields': ['email_receipt_id', 'email_validation_message', 'adf_email_receipt_id',
                      'adf_email_validation_message'], 'expanded': False}),
+    ]
+
+
+class DealerUserView(ModelView):
+
+    def process_form(self, form, is_created):
+        if form.password.data:
+            form.password.data = generate_password_hash(form.password.data)
+
+    datamodel = SQLAInterface(DealerUser)
+    list_columns = ['first_name', 'last_name', 'username', 'active', 'store_name']
+    search_columns = ['store_name', 'username', 'first_name', 'last_name', 'last_login']
+    show_fieldsets = [
+        ('Dealer User Info:',
+         {'fields': ['id', 'store_name', 'first_name', 'last_name', 'username', 'email', 'last_login', 'active'],
+          'expanded': True}),
+    ]
+    add_fieldsets = [
+        ('New Dealer User:',
+         {'fields': ['store_name', 'first_name', 'last_name', 'username', 'email', 'password'],
+          'expanded': True}),
+    ]
+    edit_fieldsets = [
+        ('Modify Dealer User:',
+         {'fields': ['store_name', 'first_name', 'last_name', 'username', 'email', 'password', 'last_login'],
+          'expanded': True}),
     ]
 
 
@@ -203,6 +231,8 @@ appbuilder.add_view(CampaignTypeModelView, "Campaign Types View", icon="fa-th-la
                     category_icon='fa-th-list')
 appbuilder.add_view(StoreModelView, "Store View", icon="fa-plus-square", category="Stores",
                     category_icon='fa-plus-square')
+appbuilder.add_view(DealerUserView, "Dealer Users", icon="fa-user-circle-o", category="Stores",
+                    category_icon="fa-secret")
 appbuilder.add_view(VisitorModelView, "Visitor View", icon="fa-user", category="Visitor Data",
                     category_icon='fa-user')
 appbuilder.add_view(AppendedVisitorModelView, "Appended Visitor View", icon="fa-user-plus", category="Visitor Data",
