@@ -274,6 +274,7 @@ class Dashboard(Model):
 
 
 class DealerUser(Model):
+    __tablename__ = 'dealer_users'
     id = Column(Integer, primary_key=True)
     first_name = Column(String(64))
     last_name = Column(String(64), nullable=False)

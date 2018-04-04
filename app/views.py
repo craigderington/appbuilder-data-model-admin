@@ -6,7 +6,7 @@ from markupsafe import Markup, escape
 from werkzeug.security import generate_password_hash
 from app import appbuilder, db
 from .models import CampaignType, Campaign, Store, Visitor, AppendedVisitor, \
-    Lead, PixelTracker, DealerUser
+    Lead, PixelTracker, DealerUser, Dashboard
 
 
 class CampaignModelView(ModelView):
@@ -214,6 +214,19 @@ class PixelTrackerModelView(ModelView):
     edit_fieldsets = []
 
 
+class DashboardView(ModelView):
+    datamodel = SQLAInterface(Dashboard)
+    list_columns = ['total_stores', 'active_stores', 'total_campaigns', 'active_campaigns', 'total_global_visitors',
+                    'total_unique_visitors', 'total_us_visitors', 'total_appends', 'us_append_rate']
+    show_fieldsets = [
+        ('Current Dashboard Data',
+         {'fields': ['total_stores', 'active_stores', 'total_campaigns', 'active_campaigns', 'total_global_visitors',
+                     'total_unique_visitors', 'total_us_visitors', 'total_appends', 'total_sent_to_dealer',
+                     'total_sent_followup_emails', 'total_rvms_sent', 'global_append_rate', 'unique_append_rate',
+                     'us_append_rate'], 'expanded': True}),
+    ]
+
+
 @appbuilder.app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html', base_template=appbuilder.base_template, appbuilder=appbuilder), 404
@@ -239,6 +252,8 @@ appbuilder.add_view(AppendedVisitorModelView, "Appended Visitor View", icon="fa-
                     category_icon='fa-user-plus')
 appbuilder.add_view(LeadModelView, "Lead View", icon="fa-address-card-o", category="Visitor Data",
                     category_icon='fa-address-card-o')
+appbuilder.add_view(DashboardView, "Dashboard View", icon="fa-dashboard", category="Visitor Data",
+                    category_icon="fa-dashboard")
 appbuilder.add_view(PixelTrackerModelView, "Pixel Tracker View", icon="fa-globe", category="Campaigns",
                     category_icon='fa-globe')
 
