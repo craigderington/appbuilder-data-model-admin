@@ -17,7 +17,7 @@ class Visitor(Model):
     created_date = Column(DateTime, default=datetime.now)
     ip = Column(String(15), nullable=False, index=True)
     user_agent = Column(String(255))
-    referrer = Column(Text)
+    # referrer = Column(Text)
     job_number = Column(Integer, nullable=False)
     client_id = Column(String(255), nullable=False)
     appended = Column(Boolean, default=False)
@@ -268,6 +268,7 @@ class GlobalDashboard(Model):
     global_append_rate = Column(Float, default=0.00, nullable=False)
     unique_append_rate = Column(Float, default=0.00, nullable=False)
     us_append_rate = Column(Float, default=0.00, nullable=False)
+    last_update = Column(DateTime, onupdate=datetime.now, nullable=True)
 
     def __repr__(self):
         return '{}'.format(self.id)
@@ -277,6 +278,7 @@ class StoreDashboard(Model):
     __tablename__ = 'store_dashboard'
     id = Column(Integer, primary_key=True)
     store_id = Column(Integer, ForeignKey('stores.id'))
+    store_name = relationship("Store")
     total_campaigns = Column(Integer, default=0, nullable=False)
     active_campaigns = Column(Integer, default=0, nullable=False)
     total_global_visitors = Column(Integer, default=0, nullable=False)
@@ -289,9 +291,33 @@ class StoreDashboard(Model):
     global_append_rate = Column(Float, default=0.00, nullable=False)
     unique_append_rate = Column(Float, default=0.00, nullable=False)
     us_append_rate = Column(Float, default=0.00, nullable=False)
+    last_update = Column(DateTime, onupdate=datetime.now, nullable=True)
 
     def __repr__(self):
         return '{}'.format(self.id)
+
+
+class CampaignDashboard(Model):
+    __tablename__ = 'campaign_dashboard'
+    id = Column(Integer, primary_key=True)
+    store_id = Column(Integer, ForeignKey('stores.id'), nullable=False)
+    store_name = relationship("Store")
+    campaign_id = Column(Integer, ForeignKey('campaigns.id'), nullable=False)
+    campaign_name = relationship("Campaign")
+    total_visitors = Column(Integer, default=0, nullable=True)
+    total_appends = Column(Integer, default=0, nullable=True)
+    total_rtns = Column(Integer, default=0, nullable=True)
+    total_followup_emails = Column(Integer, default=0, nullable=True)
+    total_rvms = Column(Integer, default=0, nullable=True)
+    append_rate = Column(Float, default=0.00, nullable=True)
+    last_update = Column(DateTime, onupdate=datetime.now, nullable=True)
+
+    def __repr__(self):
+        return '{} {} {}'.format(
+            self.store_name,
+            self.campaign_name,
+            str(self.last_update)
+        )
 
 
 class DealerUser(Model):

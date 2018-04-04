@@ -6,7 +6,7 @@ from markupsafe import Markup, escape
 from werkzeug.security import generate_password_hash
 from app import appbuilder, db
 from .models import CampaignType, Campaign, Store, Visitor, AppendedVisitor, \
-    Lead, PixelTracker, DealerUser, GlobalDashboard, StoreDashboard
+    Lead, PixelTracker, DealerUser, GlobalDashboard, StoreDashboard, CampaignDashboard
 
 
 class CampaignModelView(ModelView):
@@ -229,7 +229,7 @@ class DashboardView(ModelView):
 
 class StoreDashboardView(ModelView):
     datamodel = SQLAInterface(StoreDashboard)
-    list_columns = ['total_campaigns', 'active_campaigns', 'total_global_visitors',
+    list_columns = ['store_name', 'total_campaigns', 'active_campaigns', 'total_global_visitors',
                     'total_unique_visitors', 'total_us_visitors', 'total_appends', 'us_append_rate']
     show_fieldsets = [
         ('Current Dashboard Data',
@@ -237,6 +237,17 @@ class StoreDashboardView(ModelView):
                      'total_unique_visitors', 'total_us_visitors', 'total_appends', 'total_sent_to_dealer',
                      'total_sent_followup_emails', 'total_rvms_sent', 'global_append_rate', 'unique_append_rate',
                      'us_append_rate'], 'expanded': True}),
+    ]
+
+
+class CampaignDashboardView(ModelView):
+    datamodel = SQLAInterface(CampaignDashboard)
+    list_columns = ['store_name', 'campaign_name', 'last_update', 'total_visitors', 'total_appends', 'append_rate',
+                    'total_rtns', 'total_followup_emails', 'total_rvms', ]
+    show_fieldsets = [
+        ('Current Campaign Dashboard Data',
+         {'fields': ['store_name', 'campaign_name', 'last_update', 'total_visitors', 'total_appends', 'append_rate',
+                     'total_rtns', 'total_followup_emails', 'total_rvms',], 'expanded': True}),
     ]
 
 
@@ -257,6 +268,8 @@ appbuilder.add_view(CampaignTypeModelView, "Campaign Tactics View", icon="fa-th-
                     category_icon='fa-th-list')
 appbuilder.add_view(PixelTrackerModelView, "Pixel Tracker View", icon="fa-globe", category="Campaigns",
                     category_icon='fa-globe')
+appbuilder.add_view(CampaignDashboardView, "Campaign Dashboard View", icon="fa-dashboard", category="Campaigns",
+                    category_icon='fa-dashboard')
 appbuilder.add_view(StoreModelView, "Store View", icon="fa-plus-square", category="Stores",
                     category_icon='fa-plus-square')
 appbuilder.add_view(DealerUserView, "Dealer Portal Users", icon="fa-user-circle-o", category="Stores",
